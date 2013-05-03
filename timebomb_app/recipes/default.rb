@@ -1,4 +1,4 @@
-include_recipe 'python:pip'
+include_recipe 'python::pip'
 
 deploy_revision '/opt/timebomb' do
   repo 'git://github.com/leknarf/timebomb.git'
