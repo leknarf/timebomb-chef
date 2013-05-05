@@ -20,8 +20,7 @@ deploy_revision deploy_dir do
 
   before_migrate do
     execute "install_python_dependencies" do
-      command "pip install -r requirements.txt"
-      cwd release_path
+      command "pip install -r #{release_path}/requirements.txt"
     end
   end
 
@@ -29,8 +28,7 @@ deploy_revision deploy_dir do
     kill_gunicorns = "ps -eo pid,command | grep gunicorn | grep -v grep | awk '{print $1}' | xargs kill"
     start_gunicorns = "gunicorn --daemon --workers 4 --bind 0.0.0.0:80 timebomb:app"
     execute "restart_app" do
-      command "#{kill_gunicorns}; #{start_gunicorns}"
-      cwd release_path
+      command "cd #{release_path}; #{kill_gunicorns}; #{start_gunicorns}"
     end
   end
 
