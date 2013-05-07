@@ -1,0 +1,23 @@
+# spiceweasel configuration file
+
+berksfile:
+
+roles:
+- load_balancer:
+- app:
+
+environments:
+- timebomb:
+
+clusters:
+- timebomb:
+
+  # Create one load balancer
+  - ec2 1:
+      run_list: role[load_balancer]
+      options: -d chef-full -x ubuntu -G timebomb -i ~/.ssh/id_rsa -E timebomb
+
+  # Create three app servers
+  - ec2 3:
+      run_list: role[app]
+      options: -d chef-full -x ubuntu -G timebomb -i ~/.ssh/id_rsa -E timebomb
